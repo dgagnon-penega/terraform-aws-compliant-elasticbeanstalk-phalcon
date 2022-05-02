@@ -17,3 +17,5 @@ terraform {
 # create EB and frontends
 
 # cloudfront
+
+# waf
