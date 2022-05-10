@@ -14,8 +14,20 @@ terraform {
 
 //--------------------------------------------------------------------
 
+# domain or subdomain
+resource "aws_route53_zone" "domain" {
+  name = var.domain_name
+
+  tags = {
+    Env = var.env_version
+  }
+}
+
+# s3 public bucket
+
 # create EB and frontends
 
 # cloudfront
 
 # waf
+
