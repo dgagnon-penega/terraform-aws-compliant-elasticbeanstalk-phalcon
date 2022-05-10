@@ -16,7 +16,7 @@ terraform {
 
 # domain or subdomain
 data "aws_route53_zone" "domain" {
-  id = var.zone_id
+  zone_id = var.zone_id
 }
 
 # s3 public bucket
