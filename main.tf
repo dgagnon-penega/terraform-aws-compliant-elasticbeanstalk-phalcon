@@ -15,12 +15,8 @@ terraform {
 //--------------------------------------------------------------------
 
 # domain or subdomain
-resource "aws_route53_zone" "domain" {
-  name = var.domain_name
-
-  tags = {
-    Env = var.env_version
-  }
+data "aws_route53_zone" "domain" {
+  id = var.zone_id
 }
 
 # s3 public bucket

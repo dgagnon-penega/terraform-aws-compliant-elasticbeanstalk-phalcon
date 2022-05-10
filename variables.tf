@@ -10,7 +10,7 @@ variable "env_project" {
 variable "env_client" {
   type = string
 }
-variable "domain_name" {
+variable "zone_id" {
   type = string
 }
 variable "admin_ips" {
