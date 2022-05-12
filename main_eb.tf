@@ -165,7 +165,7 @@ data "aws_iam_policy_document" "eb_policy" {
       "rds-db:connect"
     ]
     resources = [
-      "arn:aws:rds-db:${var.aws_region}:${data.aws_caller_identity.default.account_id}:dbuser:${var.cluster_id}/dbuser"
+      "arn:aws:rds-db:${var.aws_region}:${data.aws_caller_identity.default.account_id}:dbuser:${var.db_cluster_id}/dbuser"
     ]
     condition {
       test   = "ForAllValues:StringEquals"

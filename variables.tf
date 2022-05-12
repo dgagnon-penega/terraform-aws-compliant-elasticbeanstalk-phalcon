@@ -79,7 +79,7 @@ variable "ec2_instance_size" {
 variable "vpc_id" {}
 variable "kms_arn" {}
 variable "kms_global_arn" {}
-variable "cluster_id" {}
+variable "db_cluster_id" {}
 variable "log_bucket_arn" {}
 variable "scripts_bucket_arn" {}
 variable "eb_app_name" {}
