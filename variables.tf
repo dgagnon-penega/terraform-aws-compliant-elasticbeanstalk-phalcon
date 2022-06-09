@@ -76,19 +76,19 @@ variable "ec2_instance_size" {
   default = "t3a.medium"
 }
 
-variable "vpc_id" {}
-variable "kms_arn" {}
-variable "kms_global_arn" {}
-variable "db_cluster_id" {}
-variable "log_bucket_arn" {}
-variable "scripts_bucket_arn" {}
-variable "eb_app_name" {}
-variable "ec2_key_name" {}
-variable "vpc_subnets_public_ids" {}
-variable "vpc_subnets_private_ids" {}
-variable "sg_lb_id" {}
-variable "wks_ip" {
-  default = "184.160.97.226"
-}
-variable "eb_service_role_arn" {}
-variable "shared_alb_arn" {}
+#variable "vpc_id" {}
+#variable "kms_arn" {}
+#variable "kms_global_arn" {}
+#variable "db_cluster_id" {}
+#variable "log_bucket_arn" {}
+#variable "scripts_bucket_arn" {}
+#variable "eb_app_name" {}
+#variable "ec2_key_name" {}
+#variable "vpc_subnets_public_ids" {}
+#variable "vpc_subnets_private_ids" {}
+#variable "sg_lb_id" {}
+#variable "wks_ip" {
+#  default = "184.160.97.226"
+#}
+#variable "eb_service_role_arn" {}
+#variable "shared_alb_arn" {}
