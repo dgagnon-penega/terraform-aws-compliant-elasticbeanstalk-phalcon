@@ -19,40 +19,40 @@ locals {
 }
 data "aws_caller_identity" "default" {}
 //--------------------------------------------------------------------
-
-# domain or subdomain
-data "aws_route53_zone" "domain" {
-  zone_id = var.zone_id
-}
-
-# s3 public bucket
-// public bucket policy
-data "aws_iam_policy_document" "public" {
-  statement {
-    sid     = "AllowSSLRequestsOnly"
-    effect  = "Deny"
-    actions = [
-      "s3:*"
-    ]
-
-    resources = [
-      "${local.pub_bucket_arn}/*",
-      local.pub_bucket_arn
-    ]
-    condition {
-      test   = "Bool"
-      values = [
-        false
-      ]
-      variable = "aws:SecureTransport"
-    }
-    principals {
-      identifiers = [
-        "*"
-      ]
-      type = "*"
-    }
-  }
+#
+## domain or subdomain
+#data "aws_route53_zone" "domain" {
+#  zone_id = var.zone_id
+#}
+#
+## s3 public bucket
+#// public bucket policy
+#data "aws_iam_policy_document" "public" {
+#  statement {
+#    sid     = "AllowSSLRequestsOnly"
+#    effect  = "Deny"
+#    actions = [
+#      "s3:*"
+#    ]
+#
+#    resources = [
+#      "${local.pub_bucket_arn}/*",
+#      local.pub_bucket_arn
+#    ]
+#    condition {
+#      test   = "Bool"
+#      values = [
+#        false
+#      ]
+#      variable = "aws:SecureTransport"
+#    }
+#    principals {
+#      identifiers = [
+#        "*"
+#      ]
+#      type = "*"
+#    }
+#  }
 
 # ToDo: add cloudfront
 #  statement {
@@ -76,47 +76,47 @@ data "aws_iam_policy_document" "public" {
 #    }
 #  }
 
-}
-resource "aws_s3_bucket" "public" {
-  bucket        = local.pub_bucket
-  force_destroy = false
-
-  tags = {
-    Env = var.env_version
-  }
-}
-
-
-resource "aws_s3_bucket_public_access_block" "public" {
-  bucket = aws_s3_bucket.public.id
-
-  block_public_acls       = true
-  block_public_policy     = true
-  restrict_public_buckets = true
-  ignore_public_acls      = true
-
-  #  depends_on = [
-  #    aws_s3_bucket_policy.public
-  #  ]
-}
-
-resource "aws_s3_bucket_server_side_encryption_configuration" "public" {
-  bucket = aws_s3_bucket.public.id
-
-  rule {
-    apply_server_side_encryption_by_default {
-      sse_algorithm = "AES256"
-    }
-    bucket_key_enabled = true
-  }
-}
-
-resource "aws_s3_bucket_versioning" "public" {
-  bucket = aws_s3_bucket.public.id
-  versioning_configuration {
-    status = "Enabled"
-  }
-}
+#}
+#resource "aws_s3_bucket" "public" {
+#  bucket        = local.pub_bucket
+#  force_destroy = false
+#
+#  tags = {
+#    Env = var.env_version
+#  }
+#}
+#
+#
+#resource "aws_s3_bucket_public_access_block" "public" {
+#  bucket = aws_s3_bucket.public.id
+#
+#  block_public_acls       = true
+#  block_public_policy     = true
+#  restrict_public_buckets = true
+#  ignore_public_acls      = true
+#
+#  #  depends_on = [
+#  #    aws_s3_bucket_policy.public
+#  #  ]
+#}
+#
+#resource "aws_s3_bucket_server_side_encryption_configuration" "public" {
+#  bucket = aws_s3_bucket.public.id
+#
+#  rule {
+#    apply_server_side_encryption_by_default {
+#      sse_algorithm = "AES256"
+#    }
+#    bucket_key_enabled = true
+#  }
+#}
+#
+#resource "aws_s3_bucket_versioning" "public" {
+#  bucket = aws_s3_bucket.public.id
+#  versioning_configuration {
+#    status = "Enabled"
+#  }
+#}
 
 # for drp
 #resource "aws_s3_bucket_replication_configuration" "public" {
@@ -147,54 +147,54 @@ resource "aws_s3_bucket_versioning" "public" {
 #    }
 #  }
 #}
-
-resource "aws_s3_bucket_cors_configuration" "public" {
-  bucket = aws_s3_bucket.public.id
-
-  cors_rule {
-    allowed_headers = [
-      "*"
-    ]
-    allowed_methods = [
-      "GET"
-    ]
-    allowed_origins = [
-      "*"
-    ]
-    expose_headers = []
-  }
-}
-
-resource "aws_s3_bucket_lifecycle_configuration" "public" {
-  bucket = aws_s3_bucket.public.id
-
-  rule {
-    id = "cleanOldVersions"
-    abort_incomplete_multipart_upload { days_after_initiation = 1 }
-
-    noncurrent_version_expiration {
-      noncurrent_days = 90
-    }
-    expiration {
-      expired_object_delete_marker = true
-    }
-    status = "Enabled"
-  }
-}
-
-resource "aws_s3_bucket_policy" "public" {
-  bucket = aws_s3_bucket.public.id
-  policy = data.aws_iam_policy_document.public.json
-}
-resource "aws_ssm_parameter" "bucket_public" {
-  name        = "/${var.env_project}/${var.env_version}/BUCKET_PUBLIC"
-  description = "ARN of the public bucket."
-  type        = "String"
-  value       = local.pub_bucket
-  tags        = {
-    Env = var.env_version
-  }
-}
+#
+#resource "aws_s3_bucket_cors_configuration" "public" {
+#  bucket = aws_s3_bucket.public.id
+#
+#  cors_rule {
+#    allowed_headers = [
+#      "*"
+#    ]
+#    allowed_methods = [
+#      "GET"
+#    ]
+#    allowed_origins = [
+#      "*"
+#    ]
+#    expose_headers = []
+#  }
+#}
+#
+#resource "aws_s3_bucket_lifecycle_configuration" "public" {
+#  bucket = aws_s3_bucket.public.id
+#
+#  rule {
+#    id = "cleanOldVersions"
+#    abort_incomplete_multipart_upload { days_after_initiation = 1 }
+#
+#    noncurrent_version_expiration {
+#      noncurrent_days = 90
+#    }
+#    expiration {
+#      expired_object_delete_marker = true
+#    }
+#    status = "Enabled"
+#  }
+#}
+#
+#resource "aws_s3_bucket_policy" "public" {
+#  bucket = aws_s3_bucket.public.id
+#  policy = data.aws_iam_policy_document.public.json
+#}
+#resource "aws_ssm_parameter" "bucket_public" {
+#  name        = "/${var.env_project}/${var.env_version}/BUCKET_PUBLIC"
+#  description = "ARN of the public bucket."
+#  type        = "String"
+#  value       = local.pub_bucket
+#  tags        = {
+#    Env = var.env_version
+#  }
+#}
 
 # create EB
 
